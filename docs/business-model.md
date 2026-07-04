@@ -2,7 +2,7 @@
 
 ## Classification
 
-- Repository: `cloud-itonami-8720`
+- Repository: `cloud-itonami-isic-8720`
 - ISIC Rev.5: `8720`
 - Activity: residential care activities for persons with intellectual/developmental disabilities, mental health conditions or substance-use disorders
 - Social impact: care quality, data sovereignty, transparent audit

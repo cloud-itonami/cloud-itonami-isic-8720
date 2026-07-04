@@ -1,4 +1,4 @@
-# cloud-itonami-8720
+# cloud-itonami-isic-8720
 
 Open Business Blueprint for **ISIC Rev.5 8720**: Residential care activities for mental retardation, mental ....
 

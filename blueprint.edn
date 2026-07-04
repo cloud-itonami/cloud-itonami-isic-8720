@@ -1,4 +1,4 @@
-{:itonami.blueprint/id "cloud-itonami-8720"
+{:itonami.blueprint/id "cloud-itonami-isic-8720"
  :itonami.blueprint/name "Residential care activities for mental retardation, mental ..."
  :itonami.blueprint/isic-rev5 "8720"
  :itonami.blueprint/domain :health/residential-behavioral-care

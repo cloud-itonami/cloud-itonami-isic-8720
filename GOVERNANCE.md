@@ -1,6 +1,6 @@
 # Governance
 
-`cloud-itonami-8720` is an OSS open-business blueprint for residential care activities for persons with intellectual/developmental disabilities, mental health conditions or substance-use disorders.
+`cloud-itonami-isic-8720` is an OSS open-business blueprint for residential care activities for persons with intellectual/developmental disabilities, mental health conditions or substance-use disorders.
 Governance covers both the capability layer and the operator model.
 
 ## Maintainers
