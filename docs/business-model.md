@@ -31,7 +31,13 @@
 ## Trust Controls
 
 - no treatment plan or crisis response is finalized without human sign-off (licensed behavioral-health staff)
-- a fabricated assessment forces a hold, not an override
-- every care path is auditable
+- a fabricated jurisdiction citation, incomplete evidence, an
+  insufficient resident-to-staff supervision ratio, or an unresolved
+  medication-adherence flag -- each forces a hold, not an override
+- a resident's treatment plan or crisis response cannot be finalized
+  twice: a double-finalization attempt is held off this actor's own
+  resident facts alone, with no upstream comparison needed
+- every intake, assessment, screening, treatment-plan and crisis-
+  response path is auditable
 - resident health data stays outside Git
 - emergency manual override paths remain outside LLM control
