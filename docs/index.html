@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cloud-itonami-isic-8720: Residential Care Governor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f9f9f9;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 2rem 1rem;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: #222;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1rem 3rem;
+      background: #fff;
+      border-radius: 4px;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #222;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 0.5rem;
+    }
+
+    section p {
+      margin-bottom: 1rem;
+      color: #555;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    a.btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    a.btn-primary {
+      background: #0066cc;
+      color: white;
+    }
+
+    a.btn-primary:hover {
+      background: #0052a3;
+    }
+
+    a.btn-secondary {
+      background: #e8e8e8;
+      color: #333;
+      border: 1px solid #d0d0d0;
+    }
+
+    a.btn-secondary:hover {
+      background: #d8d8d8;
+    }
+
+    ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: "Monaco", "Menlo", "Courier New", monospace;
+      font-size: 0.9em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #999;
+      font-size: 0.9rem;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 3rem;
+    }
+
+    footer a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Residential Care Governor</h1>
+    <p>ISIC Rev.5 8720 • Open Business Blueprint</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Overview</h2>
+      <p>
+        An open-source business blueprint for behavioral-health residential-care operators.
+        This repository implements a <strong>Behavioral Care Governor</strong>—a sealed LLM advisor paired with independent safety gates—to guide resident intake, jurisdiction assessment, medication-adherence screening, treatment-plan finalization, and crisis-response finalization.
+      </p>
+      <p>
+        Built on <code>langgraph-clj</code> StateGraph (portable .cljc, supervised superstep loop, interrupts, Datomic/in-memory checkpoints), the actor seals a BehavioralOps-LLM into a single node and wraps it with spec-basis validation, evidence-completeness checks, supervision-ratio sufficiency, medication-adherence-flag evaluation, and an immutable audit ledger. Hard gates ensure no treatment plan or crisis response is ever finalized without human sign-off from a licensed behavioral-health professional.
+      </p>
+      <p>
+        Any qualified, licensed behavioral-health facility operator can fork, deploy, run, improve, and sell this service in their jurisdiction.
+      </p>
+    </section>
+
+    <section>
+      <h2>What It Does</h2>
+      <ul>
+        <li><strong>Resident intake:</strong> Structured intake capture with jurisdiction-specific checklisting</li>
+        <li><strong>Jurisdiction assessment:</strong> HARD-gated on official spec-basis citations from <code>behavioral.facts/catalog</code></li>
+        <li><strong>Medication-adherence screening:</strong> Unconditional evaluation that can HARD-hold a proposal</li>
+        <li><strong>Treatment-plan finalization:</strong> Draft proposals with evidence-complete gates; human approval required</li>
+        <li><strong>Crisis-response finalization:</strong> Supervision-ratio validation, evidence gates, double-finalization guards</li>
+        <li><strong>Audit ledger:</strong> Immutable record of every intake, assessment, screening, and finalization decision</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Safety by Construction</h2>
+      <p>
+        <strong>No autonomous finalization.</strong> Both layers enforce human approval:
+        the Behavioral Care Governor's <code>:actuation/finalize-treatment-plan</code> and <code>:actuation/finalize-crisis-response</code> high-stakes gates,
+        plus the phase table which never puts finalization operations into any phase's <code>:auto</code> set.
+      </p>
+      <p>
+        <strong>Hard rejection on:</strong> fabricated jurisdiction citations · incomplete evidence · insufficient supervision ratio (maximum direction) · unresolved medication-adherence flags · double-finalization attempts.
+      </p>
+    </section>
+
+    <section>
+      <h2>Getting Started</h2>
+      <p>See <a href="operator-quickstart.md">operator-quickstart.md</a> for:</p>
+      <ul>
+        <li>Prerequisites and local setup</li>
+        <li>Running tests and the demo</li>
+        <li>Where to find the Behavioral Care Governor implementation</li>
+      </ul>
+      <p>Full architecture details are in <a href="adr/0001-architecture.md">docs/adr/0001-architecture.md</a>.</p>
+    </section>
+
+    <section>
+      <h2>For Operators</h2>
+      <div class="cta-container">
+        <a href="https://itonami.cloud/isco-1212/" class="btn btn-primary">Self-Host: Fork & Claim</a>
+        <a href="https://itonami.cloud/docs/go-live.md" class="btn btn-secondary">Managed Path</a>
+      </div>
+      <p style="margin-top: 1rem; font-size: 0.95rem; color: #666;">
+        Self-hosted operators deploy, run, and maintain their own instance. Managed operators receive support, SLA, and compliance certification. See <a href="business-model.md">business-model.md</a> and <a href="operator-guide.md">operator-guide.md</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Links</h2>
+      <ul>
+        <li><a href="../README.md">Repository README</a></li>
+        <li><a href="business-model.md">Business Model</a></li>
+        <li><a href="operator-guide.md">Operator Guide</a></li>
+        <li><a href="adr/0001-architecture.md">Architecture Decision Record</a></li>
+        <li><a href="https://github.com/com-junkawasaki/cloud-itonami-isic-8720">GitHub Repository</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      AGPL-3.0-or-later •
+      <a href="https://itonami.cloud">itonami.cloud</a>
+    </p>
+  </footer>
+</body>
+</html>
