@@ -117,31 +117,39 @@
     :intent "REFUSAL: behavioral.facts に無い法域（ATL）の要件を提案させる。要件の捏造は HARD hold。"}
 
    {:tid "t08" :phase 3
-    :request {:op :jurisdiction/assess :subject "resident-3"}
-    :approve :approved
-    :intent "resident-3 を JPN の必要書類で assess しておく（t09 の evidence 前提を満たすため）。"}
+    :request {:op :treatment-plan/finalize :subject "resident-3"}
+    :intent "REFUSAL: resident-3 はまだ assess されていない。法域の必要書類が揃わないうちは療養計画を確定できない。"}
 
    {:tid "t09" :phase 3
     :request {:op :crisis-response/finalize :subject "resident-3"}
-    :intent "REFUSAL: resident-3 の入所者/職員比を governor が独立に再計算する。"}
+    :intent "REFUSAL(2件同時): 同じ未 assess の resident-3 に危機対応確定をかける。書類不足と比率超過という独立した 2 つの規則が同時に発火する。"}
 
    {:tid "t10" :phase 3
+    :request {:op :jurisdiction/assess :subject "resident-3"}
+    :approve :approved
+    :intent "resident-3 を JPN の必要書類で assess しておく（t11 の evidence 前提を満たすため）。"}
+
+   {:tid "t11" :phase 3
+    :request {:op :crisis-response/finalize :subject "resident-3"}
+    :intent "REFUSAL: 書類は揃った。残る拒否理由は入所者/職員比だけ &mdash; governor が独立に再計算する。"}
+
+   {:tid "t12" :phase 3
     :request {:op :medication-adherence/screen :subject "resident-4"}
     :intent "REFUSAL: スクリーニング自身が未解決の服薬アドヒアランス懸念を検出。人に上げずその場で止まる。"}
 
-   {:tid "t11" :phase 3
+   {:tid "t13" :phase 3
     :request {:op :treatment-plan/finalize :subject "resident-1"}
     :intent "REFUSAL: t05 で確定済みの療養計画を二重確定させにいく。"}
 
-   {:tid "t12" :phase 3
+   {:tid "t14" :phase 3
     :request {:op :crisis-response/finalize :subject "resident-1"}
     :intent "REFUSAL: t06 で確定済みの危機対応を二重確定させにいく。"}
 
-   {:tid "t13" :phase 1
+   {:tid "t15" :phase 1
     :request {:op :jurisdiction/assess :subject "resident-1"}
     :intent "CONTRAST: phase 1 は :jurisdiction/assess を書けない。止めたのは rollout gate であって censor ではない。"}
 
-   {:tid "t14" :phase 3
+   {:tid "t16" :phase 3
     :request {:op :medication-adherence/screen :subject "resident-3"}
     :approve :rejected
     :intent "CONTRAST: governor は通した（clean）が、人が却下した。この fact は :violations を持つが governor の拒否ではない。"}])
@@ -411,10 +419,23 @@
        "</div>"))
 
 (defn- section-refusals [refusals]
-  (str "<h2>HARD governor holds &mdash; " (count refusals) " 件</h2>\n"
+  (let [rules  (mapcat #(map :rule (:violations %)) refusals)
+        multi  (filterv #(< 1 (count (:violations %))) refusals)]
+   (str "<h2>HARD governor holds &mdash; " (count refusals) " 件</h2>\n"
        "<p>いずれも <code>behavioral.governor/check</code> が <code>:hard? true</code> を返したもので、"
        "人間の承認では覆せません（承認ノードに到達すらしない）。"
        "各行の rule / detail は governor 自身が生成した violation そのものです。</p>\n"
+       "<p>この実行で発火した規則は <strong class=\"num\">" (count (distinct rules))
+       "</strong> 種類（延べ <span class=\"num\">" (count rules) "</span> 件）: "
+       (codes (sort (map kw (distinct rules)))) "。"
+       (if (seq multi)
+         (str "うち <strong class=\"num\">" (count multi)
+              "</strong> 件は独立した複数の規則が同時に発火したもので、"
+              "1 回の拒否に 1 つの理由しか無いとは限らないことを示します"
+              "（" (codes (map #(str "#" (::index %)) multi)) "）。")
+         "")
+       "<br><span class=\"muted\">これはこの実行が実際に踏んだ規則の数であって、"
+       "<code>behavioral.governor</code> が持つ規則の総数を主張するものではありません。</span></p>\n"
        (table ["#" "op" "subject" "rule" "governor が拒否した理由 (detail)" "advisor confidence"]
               (map (fn [f]
                      (row [(str "<span class=\"num\">" (cell (::index f)) "</span>")
@@ -424,7 +445,7 @@
                                               (:violations f)))
                            (str/join "<br>" (map #(esc (:detail %)) (:violations f)))
                            (str "<span class=\"num\">" (cell (:confidence f)) "</span>")]))
-                   refusals))))
+                   refusals)))))
 
 (defn- section-classes [tagged]
   (let [counts (frequencies (map ::class tagged))

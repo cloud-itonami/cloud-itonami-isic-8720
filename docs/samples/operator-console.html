@@ -2476,20 +2476,23 @@ img,svg { max-width: 100%; height: auto; }
 <p class="subtitle">Residential care activities for mental retardation, mental ...</p>
 <div class="banner">
 <p><strong>このページは実行結果です。</strong> <code>behavioral.render-html</code> が <code>behavioral.operation</code> の langgraph StateGraph を <code>behavioral.store/demo-data</code> の実 seed 入所者に対して実際に走らせ、その 1 回の実行が出した fact だけを描画しています。手で書いた入所者・診断名・臨床ステータスは 1 件もありません。</p>
-<p>この実行が書いた append-only ledger は <strong class="num">14</strong> fact、うち governor が un-overridable に拒否したものが <strong class="err num">5</strong> 件です。governor の拒否が 0 件なら <code>-main</code> は例外を投げてファイルを書きません（<code>hard-hold-invariant!</code>）。</p>
+<p>この実行が書いた append-only ledger は <strong class="num">16</strong> fact、うち governor が un-overridable に拒否したものが <strong class="err num">7</strong> 件です。governor の拒否が 0 件なら <code>-main</code> は例外を投げてファイルを書きません（<code>hard-hold-invariant!</code>）。</p>
 </div>
-<h2>HARD governor holds &mdash; 5 件</h2>
+<h2>HARD governor holds &mdash; 7 件</h2>
 <p>いずれも <code>behavioral.governor/check</code> が <code>:hard? true</code> を返したもので、人間の承認では覆せません（承認ノードに到達すらしない）。各行の rule / detail は governor 自身が生成した violation そのものです。</p>
+<p>この実行で発火した規則は <strong class="num">6</strong> 種類（延べ <span class="num">8</span> 件）: <code>already-crisis-responded</code> <code>already-treatment-planned</code> <code>evidence-incomplete</code> <code>medication-adherence-flag-unresolved</code> <code>no-spec-basis</code> <code>supervision-ratio-insufficient</code>。うち <strong class="num">1</strong> 件は独立した複数の規則が同時に発火したもので、1 回の拒否に 1 つの理由しか無いとは限らないことを示します（<code>#8</code>）。<br><span class="muted">これはこの実行が実際に踏んだ規則の数であって、<code>behavioral.governor</code> が持つ規則の総数を主張するものではありません。</span></p>
 <table>
 <thead>
 <tr><th>#</th><th>op</th><th>subject</th><th>rule</th><th>governor が拒否した理由 (detail)</th><th>advisor confidence</th></tr>
 </thead>
 <tbody>
 <tr><td><span class="num">6</span></td><td><code>assess</code></td><td>resident-2</td><td><span class="err"><code>no-spec-basis</code></span></td><td>公式spec-basisの引用が無い提案は法域要件として扱えない</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">8</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="err"><code>supervision-ratio-insufficient</code></span></td><td>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
-<tr><td><span class="num">9</span></td><td><code>screen</code></td><td>resident-4</td><td><span class="err"><code>medication-adherence-flag-unresolved</code></span></td><td>未解決の服薬アドヒアランス懸念がある状態での療養計画確定提案は進められない</td><td><span class="num">0.95</span></td></tr>
-<tr><td><span class="num">10</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="err"><code>already-treatment-planned</code></span></td><td>resident-1 は既に療養計画確定済み</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">11</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="err"><code>already-crisis-responded</code></span></td><td>resident-1 は既に危機対応確定済み</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">7</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="err"><code>evidence-incomplete</code></span></td><td>法域の必要書類(入所記録/療養計画開示書/リスクアセスメント報告書/人員配置証明書等)が充足していない状態での提案</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">8</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="err"><code>evidence-incomplete</code></span> <span class="err"><code>supervision-ratio-insufficient</code></span></td><td>法域の必要書類(入所記録/療養計画開示書/リスクアセスメント報告書/人員配置証明書等)が充足していない状態での提案<br>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
+<tr><td><span class="num">10</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="err"><code>supervision-ratio-insufficient</code></span></td><td>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
+<tr><td><span class="num">11</span></td><td><code>screen</code></td><td>resident-4</td><td><span class="err"><code>medication-adherence-flag-unresolved</code></span></td><td>未解決の服薬アドヒアランス懸念がある状態での療養計画確定提案は進められない</td><td><span class="num">0.95</span></td></tr>
+<tr><td><span class="num">12</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="err"><code>already-treatment-planned</code></span></td><td>resident-1 は既に療養計画確定済み</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">13</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="err"><code>already-crisis-responded</code></span></td><td>resident-1 は既に危機対応確定済み</td><td><span class="num">0.9</span></td></tr>
 </tbody>
 </table>
 <h2>拒否の種類を数え分ける</h2>
@@ -2500,16 +2503,16 @@ img,svg { max-width: 100%; height: auto; }
 </thead>
 <tbody>
 <tr><td><span class="ok">commit</span></td><td>誰も止めていない</td><td><span class="num">7</span></td><td><code>:t</code> = <code>:committed</code></td></tr>
-<tr><td><span class="err">governor refusal</span></td><td>Behavioral Care Governor（censor）</td><td><span class="num err">5</span></td><td><code>:t</code> = <code>:governor-hold</code> かつ <code>:phase-reason</code> 無し</td></tr>
+<tr><td><span class="err">governor refusal</span></td><td>Behavioral Care Governor（censor）</td><td><span class="num err">7</span></td><td><code>:t</code> = <code>:governor-hold</code> かつ <code>:phase-reason</code> 無し</td></tr>
 <tr><td><span class="warn">phase gate hold</span></td><td>rollout phase gate（censor ではない）</td><td><span class="num">1</span></td><td><code>:phase-reason</code> 有り、<code>:basis</code> は空</td></tr>
 <tr><td><span class="warn">approver rejection</span></td><td>人間の承認者</td><td><span class="num">1</span></td><td><code>:t</code> = <code>:approval-rejected</code></td></tr>
 </tbody>
 </table><div class="note">
 <p><strong>なぜ <code>:violations</code> で数えてはいけないか（この実行で実際に起きた形）。</strong></p>
-<p>t14 の却下 fact は <code>:t approval-rejected</code> で、<code>:violations [:approver-rejected]</code> を <strong>持っています</strong>。しかし governor 側の判定は clean（この提案は escalate されて人に渡っている）で、止めたのは承認者です。<code>:violations</code> が空でないことを governor の拒否の印にすると、この 1 件が governor の拒否として数えられ、件数は 5 ではなく 6 になります。</p>
+<p>t14 の却下 fact は <code>:t approval-rejected</code> で、<code>:violations [:approver-rejected]</code> を <strong>持っています</strong>。しかし governor 側の判定は clean（この提案は escalate されて人に渡っている）で、止めたのは承認者です。<code>:violations</code> が空でないことを governor の拒否の印にすると、この 1 件が governor の拒否として数えられ、件数は 7 ではなく 8 になります。</p>
 <p>逆に t13 の phase hold は <code>:basis</code> が空で <code>:phase-reason phase-disabled</code> を持ちます &mdash; phase 1 は <code>assess</code> をまだ書けないので rollout gate が止めました。governor はこの提案に何の違反も見つけていません。</p>
 </div>
-<h2>実行したシナリオ &mdash; 14 件</h2>
+<h2>実行したシナリオ &mdash; 16 件</h2>
 <p>上から順に、1 つの MemStore と 1 つのコンパイル済み OperationActor に対して実行したものです。<code>paused</code> は langgraph が <code>interrupt-before #{:request-approval}</code> で実際に停止し、人間の再開を待ったことを意味します。</p>
 <table>
 <thead>
@@ -2523,16 +2526,18 @@ img,svg { max-width: 100%; height: auto; }
 <tr><td><code>t05</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="warn">yes</span></td><td><span class="ok">approved</span></td><td><code>actuation</code></td><td><span class="ok">commit</span></td><td><span class="num">4</span></td><td>実在の療養計画を確定する actuation。governor の high-stakes と phase の :auto 不在が独立に人を要求する。</td></tr>
 <tr><td><code>t06</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="warn">yes</span></td><td><span class="ok">approved</span></td><td><code>actuation</code></td><td><span class="ok">commit</span></td><td><span class="num">5</span></td><td>実在の危機対応を確定する actuation。同じく二層が独立に人を要求する。</td></tr>
 <tr><td><code>t07</code></td><td><span class="num">3</span></td><td><code>assess</code></td><td>resident-2</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">6</span></td><td>REFUSAL: behavioral.facts に無い法域（ATL）の要件を提案させる。要件の捏造は HARD hold。</td></tr>
-<tr><td><code>t08</code></td><td><span class="num">3</span></td><td><code>assess</code></td><td>resident-3</td><td><span class="warn">yes</span></td><td><span class="ok">approved</span></td><td><code>phase-approval</code></td><td><span class="ok">commit</span></td><td><span class="num">7</span></td><td>resident-3 を JPN の必要書類で assess しておく（t09 の evidence 前提を満たすため）。</td></tr>
-<tr><td><code>t09</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">8</span></td><td>REFUSAL: resident-3 の入所者/職員比を governor が独立に再計算する。</td></tr>
-<tr><td><code>t10</code></td><td><span class="num">3</span></td><td><code>screen</code></td><td>resident-4</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">9</span></td><td>REFUSAL: スクリーニング自身が未解決の服薬アドヒアランス懸念を検出。人に上げずその場で止まる。</td></tr>
-<tr><td><code>t11</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">10</span></td><td>REFUSAL: t05 で確定済みの療養計画を二重確定させにいく。</td></tr>
-<tr><td><code>t12</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">11</span></td><td>REFUSAL: t06 で確定済みの危機対応を二重確定させにいく。</td></tr>
-<tr><td><code>t13</code></td><td><span class="num">1</span></td><td><code>assess</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">12</span></td><td>CONTRAST: phase 1 は :jurisdiction/assess を書けない。止めたのは rollout gate であって censor ではない。</td></tr>
-<tr><td><code>t14</code></td><td><span class="num">3</span></td><td><code>screen</code></td><td>resident-3</td><td><span class="warn">yes</span></td><td><span class="err">rejected</span></td><td><code>phase-approval</code></td><td><span class="err">hold</span></td><td><span class="num">13</span></td><td>CONTRAST: governor は通した（clean）が、人が却下した。この fact は :violations を持つが governor の拒否ではない。</td></tr>
+<tr><td><code>t08</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">7</span></td><td>REFUSAL: resident-3 はまだ assess されていない。法域の必要書類が揃わないうちは療養計画を確定できない。</td></tr>
+<tr><td><code>t09</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">8</span></td><td>REFUSAL(2件同時): 同じ未 assess の resident-3 に危機対応確定をかける。書類不足と比率超過という独立した 2 つの規則が同時に発火する。</td></tr>
+<tr><td><code>t10</code></td><td><span class="num">3</span></td><td><code>assess</code></td><td>resident-3</td><td><span class="warn">yes</span></td><td><span class="ok">approved</span></td><td><code>phase-approval</code></td><td><span class="ok">commit</span></td><td><span class="num">9</span></td><td>resident-3 を JPN の必要書類で assess しておく（t11 の evidence 前提を満たすため）。</td></tr>
+<tr><td><code>t11</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-3</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">10</span></td><td>REFUSAL: 書類は揃った。残る拒否理由は入所者/職員比だけ &amp;mdash; governor が独立に再計算する。</td></tr>
+<tr><td><code>t12</code></td><td><span class="num">3</span></td><td><code>screen</code></td><td>resident-4</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">11</span></td><td>REFUSAL: スクリーニング自身が未解決の服薬アドヒアランス懸念を検出。人に上げずその場で止まる。</td></tr>
+<tr><td><code>t13</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">12</span></td><td>REFUSAL: t05 で確定済みの療養計画を二重確定させにいく。</td></tr>
+<tr><td><code>t14</code></td><td><span class="num">3</span></td><td><code>finalize</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">13</span></td><td>REFUSAL: t06 で確定済みの危機対応を二重確定させにいく。</td></tr>
+<tr><td><code>t15</code></td><td><span class="num">1</span></td><td><code>assess</code></td><td>resident-1</td><td><span class="muted">no</span></td><td><span class="muted">&mdash;</span></td><td>&mdash;</td><td><span class="err">hold</span></td><td><span class="num">14</span></td><td>CONTRAST: phase 1 は :jurisdiction/assess を書けない。止めたのは rollout gate であって censor ではない。</td></tr>
+<tr><td><code>t16</code></td><td><span class="num">3</span></td><td><code>screen</code></td><td>resident-3</td><td><span class="warn">yes</span></td><td><span class="err">rejected</span></td><td><code>phase-approval</code></td><td><span class="err">hold</span></td><td><span class="num">15</span></td><td>CONTRAST: governor は通した（clean）が、人が却下した。この fact は :violations を持つが governor の拒否ではない。</td></tr>
 </tbody>
 </table>
-<h2>append-only 監査 ledger &mdash; 14 fact</h2>
+<h2>append-only 監査 ledger &mdash; 16 fact</h2>
 <p><code>behavioral.store/append-ledger!</code> が実行順に積んだものをそのまま出しています。<code>actor</code> 列は graph を <strong>実行した</strong> actor の id であり、承認者ではありません（下記「承認者の追跡可能性」参照）。</p>
 <table>
 <thead>
@@ -2546,13 +2551,15 @@ img,svg { max-width: 100%; height: auto; }
 <tr><td><span class="num">4</span></td><td><code>committed</code></td><td><span class="ok">commit</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>resident-1</code></td><td>resident-1 向け療養計画確定提案 (resident=Sakura Tanaka)</td><td>&mdash;</td></tr>
 <tr><td><span class="num">5</span></td><td><code>committed</code></td><td><span class="ok">commit</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>resident-1</code></td><td>resident-1 向け危機対応確定提案 (resident=Sakura Tanaka)</td><td>&mdash;</td></tr>
 <tr><td><span class="num">6</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>assess</code></td><td>resident-2</td><td><code>no-spec-basis</code></td><td>公式spec-basisの引用が無い提案は法域要件として扱えない</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">7</span></td><td><code>committed</code></td><td><span class="ok">commit</span></td><td><code>assess</code></td><td>resident-3</td><td><code>精神保健及び精神障害者福祉に関する法律 (Act on Mental Health and Welfare for the Mentally Disabled)</code> <code>https://www.mhlw.go.jp/</code></td><td>JPN (厚生労働省 (Ministry of Health, Labour and Welfare, MHLW)) 向け必要書類 4 件を提案</td><td>&mdash;</td></tr>
-<tr><td><span class="num">8</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-3</td><td><code>supervision-ratio-insufficient</code></td><td>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
-<tr><td><span class="num">9</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>screen</code></td><td>resident-4</td><td><code>medication-adherence-flag-unresolved</code></td><td>未解決の服薬アドヒアランス懸念がある状態での療養計画確定提案は進められない</td><td><span class="num">0.95</span></td></tr>
-<tr><td><span class="num">10</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>already-treatment-planned</code></td><td>resident-1 は既に療養計画確定済み</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">11</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>already-crisis-responded</code></td><td>resident-1 は既に危機対応確定済み</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">12</span></td><td><code>governor-hold</code></td><td><span class="warn">phase gate hold</span></td><td><code>assess</code></td><td>resident-1</td><td>&mdash;</td><td>&mdash;</td><td><span class="num">0.9</span></td></tr>
-<tr><td><span class="num">13</span></td><td><code>approval-rejected</code></td><td><span class="warn">approver rejection</span></td><td><code>screen</code></td><td>resident-3</td><td><code>approver-rejected</code></td><td></td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">7</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-3</td><td><code>evidence-incomplete</code></td><td>法域の必要書類(入所記録/療養計画開示書/リスクアセスメント報告書/人員配置証明書等)が充足していない状態での提案</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">8</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-3</td><td><code>evidence-incomplete</code> <code>supervision-ratio-insufficient</code></td><td>法域の必要書類(入所記録/療養計画開示書/リスクアセスメント報告書/人員配置証明書等)が充足していない状態での提案<br>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
+<tr><td><span class="num">9</span></td><td><code>committed</code></td><td><span class="ok">commit</span></td><td><code>assess</code></td><td>resident-3</td><td><code>精神保健及び精神障害者福祉に関する法律 (Act on Mental Health and Welfare for the Mentally Disabled)</code> <code>https://www.mhlw.go.jp/</code></td><td>JPN (厚生労働省 (Ministry of Health, Labour and Welfare, MHLW)) 向け必要書類 4 件を提案</td><td>&mdash;</td></tr>
+<tr><td><span class="num">10</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-3</td><td><code>supervision-ratio-insufficient</code></td><td>resident-3 の入所者数(20)対職員数(2)比率が上限を超過</td><td><span class="num">0.3</span></td></tr>
+<tr><td><span class="num">11</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>screen</code></td><td>resident-4</td><td><code>medication-adherence-flag-unresolved</code></td><td>未解決の服薬アドヒアランス懸念がある状態での療養計画確定提案は進められない</td><td><span class="num">0.95</span></td></tr>
+<tr><td><span class="num">12</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>already-treatment-planned</code></td><td>resident-1 は既に療養計画確定済み</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">13</span></td><td><code>governor-hold</code></td><td><span class="err">governor refusal</span></td><td><code>finalize</code></td><td>resident-1</td><td><code>already-crisis-responded</code></td><td>resident-1 は既に危機対応確定済み</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">14</span></td><td><code>governor-hold</code></td><td><span class="warn">phase gate hold</span></td><td><code>assess</code></td><td>resident-1</td><td>&mdash;</td><td>&mdash;</td><td><span class="num">0.9</span></td></tr>
+<tr><td><span class="num">15</span></td><td><code>approval-rejected</code></td><td><span class="warn">approver rejection</span></td><td><code>screen</code></td><td>resident-3</td><td><code>approver-rejected</code></td><td></td><td><span class="num">0.9</span></td></tr>
 </tbody>
 </table>
 <h2>入所者レジスタ（実行後の SSoT） &mdash; 4 名</h2>
@@ -2619,7 +2626,7 @@ img,svg { max-width: 100%; height: auto; }
 <tr><td><code>t04</code></td><td><code>screen</code></td><td><code>set</code></td><td><code>approved-by</code></td><td>medication-screen register: <code>approved-by</code></td><td><span class="ok">保持</span></td></tr>
 <tr><td><code>t05</code></td><td><code>finalize</code></td><td><code>mark-treatment-planned</code></td><td><code>approved-by</code></td><td>resident register: <span class="err">なし</span><br>treatment-plan history: <span class="err">なし</span></td><td><span class="err">欠落</span></td></tr>
 <tr><td><code>t06</code></td><td><code>finalize</code></td><td><code>mark-crisis-responded</code></td><td><code>approved-by</code></td><td>resident register: <span class="err">なし</span><br>crisis-response history: <span class="err">なし</span></td><td><span class="err">欠落</span></td></tr>
-<tr><td><code>t08</code></td><td><code>assess</code></td><td><code>set</code></td><td><code>approved-by</code></td><td>assessment register: <code>approved-by</code></td><td><span class="ok">保持</span></td></tr>
+<tr><td><code>t10</code></td><td><code>assess</code></td><td><code>set</code></td><td><code>approved-by</code></td><td>assessment register: <code>approved-by</code></td><td><span class="ok">保持</span></td></tr>
 </tbody>
 </table>
 <div class="note">
@@ -2668,7 +2675,7 @@ img,svg { max-width: 100%; height: auto; }
 </table><p class="muted">この表に無い法域には spec-basis が <strong>ありません</strong>。そのとき governor は要件を推測させず HARD hold します &mdash; 上の t07（<code>ATL</code>）がその実行結果です。</p>
 <footer>
 <p>このファイルは <code>clojure -M:dev:render-html</code> の生成物です。手で編集しないでください &mdash; actor を走らせ直せば再生成されます。</p>
-<p>再現性: 壁時計・UUID・実行ごとに変わる識別子はこのページに 1 つも入れていないので、同じ commit から何度生成してもバイト一致します。描画した ledger は <span class="num">14</span> fact、すべて <code>behavioral.store</code> の append-only ログから読んだものです。</p>
+<p>再現性: 壁時計・UUID・実行ごとに変わる識別子はこのページに 1 つも入れていないので、同じ commit から何度生成してもバイト一致します。描画した ledger は <span class="num">16</span> fact、すべて <code>behavioral.store</code> の append-only ログから読んだものです。</p>
 <p>ライセンス: AGPL-3.0-or-later / cloud-itonami-isic-8720</p>
 </footer>
 </body>
