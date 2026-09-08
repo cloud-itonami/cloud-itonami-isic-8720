@@ -48,7 +48,7 @@
   Regenerate:  clojure -M:dev:render-html [out-file]"
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [jp-go-dds.skin :as skin]
             [behavioral.facts :as facts]
             [behavioral.governor :as governor]

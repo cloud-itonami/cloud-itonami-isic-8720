@@ -31,7 +31,7 @@
   treatment plan or crisis response itself (that is `behavioral.
   operation`'s `:treatment-plan/finalize`/`:crisis-response/finalize`,
   always human-gated -- see README `Actuation`)."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 (defn- unsigned-certificate
   "Every certificate this actor produces is UNSIGNED -- signature is the
@@ -84,7 +84,7 @@
     (throw (ex-info "treatment-plan-finalization: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "treatment-plan-finalization: sequence must be >= 0" {})))
-  (let [plan-number (str (str/upper-case jurisdiction) "-TPL-" (zero-pad sequence 6))
+  (let [plan-number (str (str/upper jurisdiction) "-TPL-" (zero-pad sequence 6))
         record {"record_id" plan-number
                 "kind" "treatment-plan-finalization-draft"
                 "resident_id" resident-id
@@ -109,7 +109,7 @@
     (throw (ex-info "crisis-response-finalization: jurisdiction required" {})))
   (when (< sequence 0)
     (throw (ex-info "crisis-response-finalization: sequence must be >= 0" {})))
-  (let [response-number (str (str/upper-case jurisdiction) "-CRS-" (zero-pad sequence 6))
+  (let [response-number (str (str/upper jurisdiction) "-CRS-" (zero-pad sequence 6))
         record {"record_id" response-number
                 "kind" "crisis-response-finalization-draft"
                 "resident_id" resident-id
