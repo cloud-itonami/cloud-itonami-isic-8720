@@ -46,7 +46,7 @@ Then open: `http://localhost:8000/index.html`
 
 The independent safety layer is implemented in:
 
-- **File:** `src/behavioral/governor.cljc`
+- **File:** `src/behavioral/governor.kotoba`
 - **Key checks:**
   - `:spec/basis` — official jurisdiction citation validation
   - `:evidence/incomplete` — treatment-plan/crisis-response evidence gates
@@ -59,7 +59,7 @@ The independent safety layer is implemented in:
 
 Resident lifecycle phases control which operations are auto-eligible vs. human-approval-required:
 
-- **File:** `src/behavioral/phase.cljc`
+- **File:** `src/behavioral/phase.kotoba`
 - **Phases:**
   - Phase 0: read-only (no auto operations)
   - Phase 1: assisted intake (`:resident/intake` auto-eligible only)
@@ -70,14 +70,14 @@ Resident lifecycle phases control which operations are auto-eligible vs. human-a
 
 Every intake, assessment, screening, treatment-plan, and crisis-response decision is recorded:
 
-- **File:** `src/behavioral/store.cljc` — Store protocol and append-only audit ledger
+- **File:** `src/behavioral/store.kotoba` — Store protocol and append-only audit ledger
 - **Immutable:** Separate treatment-plan-finalization and crisis-response-finalization history
 
 ## Store & Registry
 
-- **Store:** `src/behavioral/store.cljc` — MemStore (dev) or DatomicStore (production) with append-only ledger
-- **Registry:** `src/behavioral/registry.cljc` — Treatment-plan/crisis-response draft records and supervision-ratio checks
-- **Facts:** `src/behavioral/facts.cljc` — Jurisdiction-specific behavioral-health-facility licensing catalog with spec-basis citations
+- **Store:** `src/behavioral/store.kotoba` — MemStore (dev) or DatomicStore (production) with append-only ledger
+- **Registry:** `src/behavioral/registry.kotoba` — Treatment-plan/crisis-response draft records and supervision-ratio checks
+- **Facts:** `src/behavioral/facts.kotoba` — Jurisdiction-specific behavioral-health-facility licensing catalog with spec-basis citations
 
 ## Next Steps
 

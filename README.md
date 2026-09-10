@@ -184,14 +184,14 @@ bespoke domain capability lib to reference at all.
 
 | File | Role |
 |---|---|
-| `src/behavioral/store.cljc` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate treatment-plan-finalization/crisis-response-finalization history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded resident, and the double-finalization guards check dedicated `:treatment-plan-finalized?`/`:crisis-response-finalized?` booleans rather than a `:status` value |
-| `src/behavioral/registry.cljc` | Treatment-plan-finalization + crisis-response-finalization draft records, plus `supervision-ratio-insufficient?` -- the SECOND ratio-based instance in this fleet's check-family taxonomy (`leasing.registry/collateral-coverage-ratio-insufficient?` established the first, for a MINIMUM required ratio; this applies the MAXIMUM direction) |
-| `src/behavioral/facts.cljc` | Per-jurisdiction behavioral-health-facility licensing catalog with an official spec-basis citation per entry, honest coverage reporting |
-| `src/behavioral/behavioralopsllm.cljc` | **BehavioralOps-LLM Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/assessment/medication-adherence-screening/treatment-plan-finalization/crisis-response-finalization proposals |
-| `src/behavioral/governor.cljc` | **Behavioral Care Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · supervision-ratio-insufficient, pure ground-truth RATIO-based recompute · medication-adherence-flag-unresolved, unconditional evaluation, the TWENTY-SECOND grounding of this discipline and FIRST specifically for the medication-adherence-flag concept) + already-treatment-planned/already-crisis-responded guards + 1 soft (confidence/actuation gate) |
-| `src/behavioral/phase.cljc` | **Phase 0→3** -- read-only → assisted intake → assisted assess → supervised (both treatment-plan and crisis-response finalization always human; resident intake is the ONLY auto-eligible op, no direct capital risk) |
-| `src/behavioral/operation.cljc` | **OperationActor** -- langgraph-clj StateGraph |
-| `src/behavioral/sim.cljc` | demo driver |
+| `src/behavioral/store.kotoba` | **Store** protocol -- `MemStore` ‖ `DatomicStore` (`langchain.db`) + append-only audit ledger + separate treatment-plan-finalization/crisis-response-finalization history. No dynamically-filed sub-record -- both actuation ops act directly on a pre-seeded resident, and the double-finalization guards check dedicated `:treatment-plan-finalized?`/`:crisis-response-finalized?` booleans rather than a `:status` value |
+| `src/behavioral/registry.kotoba` | Treatment-plan-finalization + crisis-response-finalization draft records, plus `supervision-ratio-insufficient?` -- the SECOND ratio-based instance in this fleet's check-family taxonomy (`leasing.registry/collateral-coverage-ratio-insufficient?` established the first, for a MINIMUM required ratio; this applies the MAXIMUM direction) |
+| `src/behavioral/facts.kotoba` | Per-jurisdiction behavioral-health-facility licensing catalog with an official spec-basis citation per entry, honest coverage reporting |
+| `src/behavioral/behavioralopsllm.kotoba` | **BehavioralOps-LLM Advisor** -- `mock-advisor` ‖ `llm-advisor`; intake/assessment/medication-adherence-screening/treatment-plan-finalization/crisis-response-finalization proposals |
+| `src/behavioral/governor.kotoba` | **Behavioral Care Governor** -- 4 HARD checks (spec-basis · evidence-incomplete · supervision-ratio-insufficient, pure ground-truth RATIO-based recompute · medication-adherence-flag-unresolved, unconditional evaluation, the TWENTY-SECOND grounding of this discipline and FIRST specifically for the medication-adherence-flag concept) + already-treatment-planned/already-crisis-responded guards + 1 soft (confidence/actuation gate) |
+| `src/behavioral/phase.kotoba` | **Phase 0→3** -- read-only → assisted intake → assisted assess → supervised (both treatment-plan and crisis-response finalization always human; resident intake is the ONLY auto-eligible op, no direct capital risk) |
+| `src/behavioral/operation.kotoba` | **OperationActor** -- langgraph-clj StateGraph |
+| `src/behavioral/sim.kotoba` | demo driver |
 | `test/behavioral/*_test.clj` | governor contract · phase invariants · store parity · registry conformance · facts coverage |
 
 ## Business-process coverage (honest)
