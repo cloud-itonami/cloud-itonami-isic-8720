@@ -173,7 +173,7 @@ statement.
   scoped to only ONE of two actuations by the SAME domain-reasoning
   discipline `leasing`'s ADR-0001 established.
 - (+) The actuation invariant (governor + phase, two layers) is
-  regression-tested by `test/behavioral/phase_test.clj`'s `treatment-
+  regression-tested by `test/behavioral/phase_test.kotoba`'s `treatment-
   plan-finalize-never-auto-at-any-phase`/`crisis-response-finalize-
   never-auto-at-any-phase`.
 - (+) `MemStore` ‖ `DatomicStore` parity is proven by `test/
