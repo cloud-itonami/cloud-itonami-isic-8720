@@ -12,7 +12,7 @@
 The demo walks a single resident through a clean dual-actuation lifecycle plus five HARD-hold cases:
 
 ```bash
-clojure -M:dev:run
+kbb -M:dev:run
 ```
 
 Output: lifecycle decisions, gate evaluations, audit ledger entries, and hold reasons.
@@ -22,13 +22,13 @@ Output: lifecycle decisions, gate evaluations, audit ledger entries, and hold re
 Tests verify the Behavioral Care Governor contract, phase invariants, store parity, registry conformance, and facts coverage:
 
 ```bash
-clojure -M:dev:test
+kbb -M:dev:test
 ```
 
 For CI (errors fail; linting mirrors this):
 
 ```bash
-clojure -M:lint
+kbb -M:lint
 ```
 
 ## Publish the Landing Page
