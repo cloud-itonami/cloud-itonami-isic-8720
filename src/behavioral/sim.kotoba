@@ -1,5 +1,5 @@
 (ns behavioral.sim
-  "Demo driver -- `clojure -M:dev:run`. Walks a clean resident through
+  "Demo driver -- `kbb -M:dev:run`. Walks a clean resident through
   intake -> jurisdiction assessment -> medication-adherence screening
   -> treatment-plan-finalization proposal (always escalates) -> human
   approval -> commit, then through crisis-response-finalization

@@ -45,7 +45,7 @@
   through an explicit sorted column list rather than by printing a
   Clojure map whose key order is incidental.
 
-  Regenerate:  clojure -M:dev:render-html [out-file]"
+  Regenerate:  kbb -M:dev:render-html [out-file]"
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [kotoba.lang.text :as str]
@@ -752,7 +752,7 @@
 
 (defn- section-footer [tagged]
   (str "<footer>\n"
-       "<p>このファイルは <code>clojure -M:dev:render-html</code> の生成物です。"
+       "<p>このファイルは <code>kbb -M:dev:render-html</code> の生成物です。"
        "手で編集しないでください &mdash; actor を走らせ直せば再生成されます。</p>\n"
        "<p>再現性: 壁時計・UUID・実行ごとに変わる識別子はこのページに 1 つも入れていないので、"
        "同じ commit から何度生成してもバイト一致します。"
