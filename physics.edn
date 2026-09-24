@@ -1,0 +1,34 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README "Robotics premise": a resident-monitoring robot supports physical
+;; safety checks in residential care for mental health and substance abuse
+;; (ISIC 8720). Its physical work: the night observation round along the
+;; residents' corridor, and checking that radiator covers in residents'
+;; rooms keep the touchable surface below the scald-risk temperature.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-8720"
+ :cases
+ [{:id :night-observation-round
+   :kind :transport
+   :procedure "monitoring robot drives the night observation round along the residents' corridors and back to its dock"
+   :params {:mass-kg 35.0 :payload-kg 2.0 :v-max-mps 0.6 :a-max-mps2 0.3
+            :brake-decel-mps2 0.8 :drive-force-n 120.0 :crr 0.015
+            :cog-height-m 0.55 :support-half-length-m 0.22 :max-time-s 5000.0}
+   :sweep {:param :distance-m :values [100.0 200.0 300.0 450.0 600.0]}
+   :quantity :cycle-time-s
+   :limit {:max 600.0 :basis "estimate: one round driven within 10 minutes so a 15-minute observation interval holds with time for door checks"}
+   :boundary {:lo 50.0 :hi 1500.0}}
+  {:id :radiator-cover-surface
+   :kind :thermal
+   :procedure "MDF radiator cover in a resident's room over a 70 C panel radiator for a four-hour heating period; outer surface temperature"
+   :params {:conductivity-w-mk 0.12 :density-kg-m3 700.0 :specific-heat-j-kgk 1700.0
+            :t0-c 20.0 :t-hot-c 70.0 :h-front-w-m2k 8.0 :h-back-w-m2k 8.0
+            :threshold-c 43.0 :duration-s 14400.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.006 0.009 0.012 0.018 0.025]}
+   :quantity :peak-back-c
+   :limit {:max 43.0 :basis "estimate: 43 C, the low-surface-temperature figure used in UK care-home guidance for surfaces vulnerable residents can touch (clause to be pinned)"}
+   :boundary {:lo 0.002 :hi 0.05}}]}
